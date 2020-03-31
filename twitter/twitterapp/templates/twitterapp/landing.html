@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Twitter</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+		<script src="https://kit.fontawesome.com/5f3fa22d30.js"></script>
+		<link rel="stylesheet" type="text/css" href="{% static 'twitterapp/style.css' %}">
+	</head>
+	<body>
+		<div class="row no-gutters">
+			<div class="col-md-6 no-gutters">
+				<div class="leftside">
+					<div class="container-landing">
+						<h3>You’re one step away from the shiny new Twitter.com</h3>
+						<p>We’ve added tons of cool features, including … </p>
+						<ul class="fa-ul">
+							<li><i class="fa-li fab fa-twitter-square"></i><p>Explore</p></li>
+							<li><i class="fa-li fab fa-twitter-square"></i><p>Bookmarks</p></li>
+							<li><i class="fa-li fab fa-twitter-square"></i><p>Personalize</p></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6 no-gutters">
+				<div class="rightside">
+					<div  class="container-landing">
+						<i class="fab fa-twitter fa-3x" ></i>
+						<a href="{%  url 'login' %}"  class="ex btn btn-outline-info">Log in</a>
+						<h3>See what’s happening in the world right now</h3>
+						<br>
+						<br>
+						<p style="font-weight: bold;">Join Twitter Today</p>
+						<a href="{% url 'register' %}" class="btn btn-info btn-block" >Sign Up</a>
+						<a href="{% url 'login' %}" type="button" class="btn btn-outline-info btn-block">Log In</a>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	</body>
+</html>

@@ -1,0 +1,86 @@
+{% extends "twitterapp/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+  <div class="media-section">
+    <article class="media tweet-detail-section">
+      <!-- authorun profilindeki imagein urli-->
+      <img src="{{ tweet.user.profile.image.url }}" class="rounded-circle article-img">
+      <div class="media-body">
+        <div class="article-metadata">
+          <a class="mr-1" href="{% url 'user-detail' tweet.user %}">{{ tweet.user }}</a>
+          <small class="text-muted">@{{ tweet.user }}- {{ tweet.date_created }}</small>
+        </div>
+        <p class="tweet-detail-content">{{ tweet.content }}  </p>
+        {% if tweet.image %}
+          <img src="{{ tweet.image.url }}" class="rounded img-thumbnail tweet-img">
+        {% endif %}
+        <nav id="tweet-icons">
+          <a>
+            <form action="{% url 'retweet' %}" method="post"> {% csrf_token %}
+              <button type="submit" name="tweet_id" value='{{ tweet.id }}' style="border: 0; background: none;">
+              <i class="fa fa-retweet" aria-hidden="true"></i>
+              </button>
+            </form>
+          </a>
+          <a>
+            <form action="{% url 'like_tweet' %}" method="post">{% csrf_token %}
+              <button type="submit" name="tweet_id" value='{{ tweet.id }}' style="border: 0; background: none;">
+              <i class="fas fa-heart {% if user in tweet.likes.all %} likes-button{% endif %}"></i>
+              </button>
+            </form>
+          </a>
+          <a class="comment-icon" href="#"><i class="fas fa-comment" id="reply"></i></a>
+        </nav>
+      </div>
+    </article>
+  </div>
+  {%  for reply in  replies %}
+  <article class="media content-section">
+    <!-- authorun profilindeki imagein urli-->
+    <img src="{{ reply.user.profile.image.url }}" class="rounded-circle article-img">
+    <div class="media-body">
+      <div class="article-metadata">
+        <a class="mr-1" href="{% url 'user-detail' reply.user %}">{{ reply.user }}</a>
+        <small class="text-muted">@{{ reply.user }}- {{ reply.date_reply }}</small>
+        <p>Replying to <a href="{% url  'user-detail' tweet.user %}">@{{ tweet.user }}</a></p>
+      </div>
+      <p class="article-content">{{ reply.content }}  </p>
+    </div>
+  </article>
+{% endfor %}
+<!--  Moddal Section popup-->
+<div class="bg-modal">
+  <div class="modal-content">
+    <article class="media content-section">
+      <img src="{{ tweet.user.profile.image.url }}" class="rounded-circle article-img">
+      <div class="popup-metadata">
+        <h5 class="mr-1" href="#">{{ tweet.user }}</h5>
+        <small class="text-muted">@{{ tweet.user }}- {{ tweet.date_tweet }}</small>
+        <p class="article-content">{{ tweet.content }} </p>
+        <p class="text-muted" >Replying to <a class="modal-user-link" href="#">@{{ tweet.user }}</a></p>
+      </div>
+    </article>
+    <div class="close">+</div>
+    <div class="form-group reply-group ">
+      <form method="post" action="">{% csrf_token %}
+        
+        {{ form }}
+        <img src="{{ user.profile.image.url }}" class="rounded-circle reply-img">
+        <div class="reply-button ">
+          <button class="btn btn-info btn-responsive btn-reply " type="submit">Reply</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+document.getElementById('reply').addEventListener("click", function() {
+document.querySelector('.bg-modal').style.display = "flex";
+
+});
+document.querySelector('.close').addEventListener('click',function
+(){
+document.querySelector('.bg-modal').style.display = "none";
+});
+</script>
+{% endblock content %}

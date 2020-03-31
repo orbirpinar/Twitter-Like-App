@@ -1,0 +1,70 @@
+{% extends "twitterapp/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+  {% for profile in profiles %}
+    <legend class="border-bottom mb-4">{{ view.kwargs.username }} <span class="text-muted"> ({{ user_likes.count}})</span></legend>
+    <div class="container">
+      <div class="profile clearfix">
+        <div class="image">
+          <img src="{{profile.cover_image.url }}" class="img-cover">
+        </div>
+        <div class="user clearfix">
+          <div class="avatar">
+            <img src="{{ profile.image.url}}" class="rounded-circle img-thumbnail img-profile">
+          </div>
+          <h2>{{ profile.user.username }}<span class="text-muted">@{{ view.kwargs.username }}</span></h2>
+          <div class="actions">
+            <div class="btn-group">
+              {% if not profile.user == user %}
+                <form action="{% url 'follow' %}" method="post">
+                  {% csrf_token %}
+                  <button  type="submit" name="username" value="{{ profile.user.username}}" class="btn btn-outline-info btn-sm tip btn-responsive">
+                  {%  if user in  profile.follow.all  %}
+                  Unfollow
+                {% else %}
+                  Follow
+                {% endif %}
+                </button>
+              </form>
+              <button  class="btn btn-outline-info btn-sm tip btn-responsive" title="" data-original-title="Send message"><span class="fas fa-envelope"></span> Message</button>
+            {% else %}
+              <a href="{% url 'edit-profile' %}"  class=" edit-button btn btn-outline-info btn-sm tip btn-responsive" > Edit Profile</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="info">
+        {% if profile.bio %}
+          <p><span class="title">{{ profile.bio }}</span>
+        {% endif %}
+        {% if profile.location %}
+          <p><span class="fas fa-globe"></span> <span class="title">Address:</span> {{ profile.location }}</p>
+        {% endif %}
+        {% if profile.birth_date %}
+          <p><span class="fas fa-gift"></span> <span class="title">Date of birth:</span> {{profile.birth_date|date:"d.m.Y"}}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endfor %}
+<div class="infinite-container">
+  {% for user_like in user_likes %}
+    <div class="infinite-item">
+      <article class="media content-section">
+        <!-- authorun profilindeki imagein urli-->
+        <img src="{{ user_like.user.profile.image.url }}" class="rounded-circle article-img">
+        <div class="media-body">
+          <div class="article-metadata">
+            <a class="mr-1" href="{% url 'user-detail' user_like.user %}">{{ user_like.user }}</a>
+            <small class="text-muted">@{{ user_like.user }}- {{ user_like.date_created }}</small>
+          </div>
+          <a class="tweet-link" href="{% url 'tweet-detail' user_like.pk %}"><p class="article-content">{{ user_like.content}}  </p></a>
+          {% if user_like.image %}
+            <img src="{{ user_like.image.url }}" class="rounded img-thumbnail tweet-img">
+          {% endif %}
+        </div>
+      </article>
+    </div>
+  {% endfor %}
+</div>
+{% endblock content %}

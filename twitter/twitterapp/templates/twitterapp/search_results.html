@@ -1,0 +1,94 @@
+{% extends 'twitterapp/base.html' %}
+{% load class_name %}
+{% block content %}
+  <div class='row title-row my-5'>
+    <div class='col-12 py-0'>
+      <h3 class='my-0 py-0'>{{ count }} results for <b>{{ query }}</b></h3>
+    </div>
+  </div>
+  
+  
+  {% for object in object_list %}
+    {% with object|class_name as klass %}
+    {% if klass == 'Profile' %}
+      <div class="infinite-container search-profile">
+        <div class="infinite-item">
+          <article class="media content-section ">
+            <!-- authorun profilindeki imagein urli-->
+            <img src="{{ object.image.url }}" class="rounded-circle article-img">
+            <div class="media-body">
+              <div class="article-metadata">
+                {% if not user == object.user  %}
+                  <form action="{% url 'follow' %}" method="post">{% csrf_token %}
+                    <div class="follow-search">
+                    <button type="submit" name="username" value="{{ object.user.username}}" class="btn {%  if user in  object.follow.all  %} btn-info {% else %}
+                      btn-outline-info
+                    {% endif %}
+                    btn-sm tip btn-responsive">
+                    {% if user in object.follow.all %}
+                      Unfollow
+                    {% else %}
+                      Follow
+                    {% endif %}
+                    </button>
+                  </div>
+                </form>
+              {% endif %}
+              <a class="mr-1" href="{% url 'user-detail' object.user %}">{{ object.user }}</a>
+              <small class="text-muted">@{{ object.user }}</small>
+              {% if profile.bio %}
+              </div>
+              <p class="article-content">{{object.bio}} </p>
+            </div>
+          {% endif %}
+        </article>
+      </div>
+    </div>
+    {% elif klass == "Tweet" %}
+    <div class="infinite-container search-tweet">
+      <div class="infinite-item">
+        <article class="media content-section ">
+          <!-- authorun profilindeki imagein urli-->
+          <img src="{{ object.user.profile.image.url }}" class="rounded-circle article-img">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-1" href="{% url 'user-detail' object.user %}">{{ object.user }}</a>
+              <small class="text-muted">@{{ object.user }}- {{ object.date_tweet }}</small>
+              <small  class="text-muted">{{ object.like_set.all.count }}</small>
+            </div>
+            <a class="tweet-link" href="{% url 'tweet-detail' object.pk %}"><p class="article-content">{{ object.content }}  </p></a>
+            {% if object.image %}
+              <img src="{{ object.image.url }}" class="rounded img-thumbnail tweet-img">
+            {% endif %}
+            <nav id="tweet-icons">
+              <a>
+                <form action="{% url 'retweet' %}" method="post"> {% csrf_token %}
+                  <button type="submit" name="tweet_id" value='{{ object.id }}' style="border: 0; background: none;">
+                  <i class="fa fa-retweet" aria-hidden="true">
+                  {{ object.retweets.all.count}}
+                  </i>
+                  </button>
+                </form>
+              </a>
+              <a>
+                <form action="{% url 'like_tweet' %}" method="post">{% csrf_token %}
+                  <button type="submit" name="tweet_id" value='{{ object.id }}' style="border: 0; background: none;">
+                  <i class="fas fa-heart {% if user in object.likes.all %} likes-button{% endif %}">
+                  {{ object.likes.all.count }}   </i>
+                  </button>
+                </form>
+              </a>
+              <a class="comment-icon" href="#"><i class="fas fa-comment" id="reply"></i></a>
+            </nav>
+          </div>
+        </article>
+      </div>
+    </div>
+    
+    
+    
+  {% endif %}
+{% endwith %}
+
+{% endfor %}
+{% endblock content %}

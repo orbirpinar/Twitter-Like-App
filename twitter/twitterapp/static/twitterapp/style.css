@@ -1,0 +1,624 @@
+.leftside, .rightside{
+
+  height: 50vh;
+  width: 100%;
+  background: 
+}
+
+.leftside{
+  background-image: url(../img/left_side_background.png);
+}
+
+.leftside h3{
+  font-weight: bold;
+  color:#333;
+}
+.leftside p{
+  font-weight: bold;
+  color:#333;
+  font-size: 18px;
+}
+
+ul{
+  list-style-type: none;
+}
+.rightside{
+  background: #fff;
+}
+
+.ex {
+  width:100px;
+  height: 40px;
+  border-radius: 25%;
+  margin-left:250px;
+  margin-bottom:0; 
+}
+
+.rightside h3{
+  font-weight: bold;
+}
+
+@media screen and (min-width:760px){
+  .leftside, .rightside{
+
+  height: 100vh;
+}
+}
+
+.left-side-background{
+  height: 100vh;
+  width: 100%;
+}
+
+.container-landing{
+  width:100%;
+  padding: 100px;
+}
+
+.fa-twitter{
+	color:rgb(29, 161, 242);
+}
+
+.input-container {
+  display: flex;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.icon {
+  padding: 10px;
+  background: dodgerblue;
+  color: white;
+  min-width: 50px;
+  text-align: center;
+}
+
+.input-field {
+  width: 100%;
+  padding: 10px;
+  outline: none;
+}
+
+.input-field:focus {
+  border: 2px solid dodgerblue;
+}	
+
+.navbar-header {
+    float: left;
+    padding: 15px;
+    text-align: center;
+    width: 100%;
+}
+.navbar-brand {float:none;}
+
+
+
+
+
+.content-section {
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
+  position: relative;
+
+}
+
+
+.article-content {
+  white-space: pre-line;
+  word-break: break-all;
+}
+.tweet-link {
+  text-decoration: none;
+  color:#000;
+}
+a.tweet-link:hover{
+  color:#000;
+  text-decoration: none;
+}
+.article-img {
+  height: 65px;
+  width: 65px;
+  margin-right: 16px;
+}
+
+.article-metadata {
+  padding-bottom: 1px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #e3e3e3
+}
+
+.article-metadata a{
+  color: #000;
+  font-weight: bold;
+}
+
+.article-metadata a:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+.article-svg {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+}
+.icons{
+  position: absolute;
+  bottom: -15px;
+  left:  10px;
+  list-style: none;
+  font-size: 12px;
+}
+.icons ul{
+  margin:500px;
+}
+.icons button{
+
+}
+.tweet-detail-section{
+  background: #ffffff;
+  padding: 20px 40px;
+  border: 2px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 40px;}
+
+.tweet-detail-section ul{
+  list-style-type: none;
+  margin:0;
+  padding: 0;
+  overflow: hidden;
+}
+
+
+
+.tweet-detail-content{
+  font-size:30px;
+  word-break: break-all;
+}
+.tweet-img{
+  height: 400px;
+  width: 600px;
+  margin-right: 16px;
+}
+.reply-img
+.log-tweet{
+  position: relative;
+ 
+  left: 570px;
+}
+
+.content-input{
+width: 400px;
+height: 50px;
+position: relative;
+left:10px;
+top:50px;
+padding-left: 25px;
+border:none;
+box-shadow: none;
+}
+
+
+.user-img{
+  height: 69px;
+  width: 69px;
+  margin-right: 16px;
+  top: 50px;
+  right: 400px;
+  position: absolute;
+  pointer-events: none;
+}
+
+.reply-img{
+  height: 65px;
+  width: 65px;
+  margin-right: 26px;
+  padding:5px;
+  bottom: 100px;
+  right: : 275px;
+  position: relative;
+  pointer-events: none;
+
+}
+
+.list-item a{
+  font-weight: bold;
+  font-size: 20px;
+  color:#000;
+}
+.list-item a:hover{
+  color:#00acee;
+}
+
+.list-item i{
+  font-size : 25px;
+  margin-right:20px;
+
+}
+.list-item{
+  line-height: 400%;
+}
+.menu-img{
+  height:30px;
+  width: 30px;
+  position: relative;
+  right:5px;
+  bottom: 5px;
+
+}
+
+.sidebar-section{
+  position: -webkit-sticky;
+  position: absolute;
+  top: 0;
+  left:-40px;
+ 
+}
+
+.left-list{
+  position: relative;
+  left:-55px;
+}
+
+
+.tweet-button{
+  position: relative;
+  left: 350px;
+  bottom:15px;
+}
+.btn-tweet{
+  position: absolute;
+  bottom:-40px;
+}
+
+
+#id_image{
+position: absolute;
+left: 10px;
+top:10px;
+z-index: 1;
+ 
+}
+.tweet-form{
+
+  position: relative;
+  right: 10px;
+  top: 5px;
+  margin :25px;
+  z-index: 1;
+}
+
+.profile-img{
+ height: 134px;
+  width: 134px;
+  margin-right: 16px;
+}
+
+.float-right{
+  position: relative;
+  top:80px;
+}
+
+.image-back{
+
+      bottom: 0px;
+    height: 100%;
+    left: 0px;
+    opacity: 0;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 100%;
+    z-index: -1;
+}
+
+h1.mb-3{
+  line-height: 5px;
+}
+
+.img-fluid{
+  width: 600px;
+  height:250px;
+}
+
+body{margin-top:20px;}
+
+.profile {
+  width: 100%;
+  position: relative;
+  background: #FFF;
+  border: 1px solid #D5D5D5;
+  padding-bottom: 5px;
+  margin-bottom: 20px;
+}
+
+.profile .image {
+  display: block;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  text-align: center;
+  border: 5px solid #FFF;
+}
+
+.profile .user {
+  position: relative;
+  padding: 0px 5px 5px;
+}
+
+.profile .user .avatar {
+  position: absolute;
+  left: 20px;
+  top: -85px;
+  z-index: 2;
+}
+
+.profile .user h2 {
+  font-size: 24px;
+  line-height: 20px;
+  display: block;
+  float: left;
+  margin: 15px 0px 0px 0px;
+  font-weight: bold;
+ 
+}
+
+.profile .user h2 span{
+display: block;
+font-size:16px;
+font-weight:normal;
+}
+
+.profile .user .actions {
+  float: right;
+}
+
+.profile .user .actions .btn {
+  margin-bottom: 0px;
+  margin-right:5px;
+}
+
+.profile .info {
+  float: left;
+  margin-left: 20px;
+}
+
+.img-profile{
+    height:100px;
+    width:100px;
+}
+
+.img-cover{
+    width:800px;
+    height:300px;
+}
+
+@media (max-width: 768px) {
+  .btn-responsive {
+    padding:2px 4px;
+    font-size:80%;
+    line-height: 1;
+    border-radius:3px;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+  .btn-responsive {
+    padding:4px 9px;
+    font-size:90%;
+    line-height: 1.2;
+  }
+}
+
+.bg-modal {
+  background-color: rgba(0, 0, 0, 0.8);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content{
+  position: relative;
+}
+.reply-group{
+
+  position: relative;
+}
+
+.reply-group img{
+  position: absolute;
+  left:25px;
+
+}
+
+.reply-group textarea{
+  position: relative;
+  left:50px;
+  top:25px;
+  right:10px;
+
+}
+
+.form-group{
+  position: relative;
+  float: left;
+  width: 100%;
+  height: 95%
+  padding-bottom: 10px; 
+  }
+.form-group textarea{
+  display: inline-block;
+  width: 400px;
+  height: 158px;
+  border:none;
+  padding-top: 10px;
+  text-align: left;
+  padding-left: 55px;
+  }
+
+
+.reply-button{
+  position: relative;
+  left: 500px;
+  bottom:5px;
+  border-top: 1px solid #e3e3e3
+}
+.btn-reply{
+  position: absolute;
+
+}
+.form-group image{
+  position: relative;
+  top:500px;
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  font-size: 42px;
+  color: #333;
+  transform: rotate(45deg);
+  cursor: pointer;
+  &:hover {
+    color: #666;
+  }
+}
+
+.popup-metadata {
+  height: 40%;
+  width: 100%
+  padding-bottom: 1px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #e3e3e3
+}
+
+.popup-metadata h5{
+  color:#000;
+  font-weight:bold;
+}
+.media-section{
+  position: relative;
+}
+
+
+.media-body li{
+display:block;
+padding-right: .6em;
+margin: 1em 0;
+float: left;
+}
+.media-body li>i{
+  cursor:pointer; 
+}
+
+#div_id_cover_image{
+  position: relative;
+  top:10px;
+  padding-top: 50px;
+}
+
+#div_id_image{
+
+  position: relative;
+}
+
+#id_image{
+  position: absolute;
+  top:25px;
+}
+
+.like-button{
+  font-size:6px;
+  border-radius: 100%;
+  border:none;
+  position: relative;
+  bottom:5px;
+}
+
+
+
+.heart {
+  cursor: pointer;
+  height: 50px;
+  width: 50px;
+  background-image:url( 'https://abs.twimg.com/a/1446542199/img/t1/web_heart_animation.png');
+  background-position: left;
+  background-repeat:no-repeat;
+  background-size:2900%;
+  
+}
+
+.heart:hover {
+  background-position:right;
+}
+
+.is_animating {
+  animation: heart-burst .8s steps(28) 1;
+}
+
+@keyframes heart-burst {
+  from {background-position:left;}
+  to { background-position:right;}
+}
+
+#tweet-icons a{
+  display: inline-block;
+  padding: 20px;
+  margin:auto;
+  position: relative;
+  bottom:-22px;
+  left:-75px;
+  color:none;
+  
+}
+
+
+
+  
+
+.retweet-button{
+  border: none;
+  background: none;
+}
+
+.fa-comment{
+  color:gray;
+}
+.fa-comment:hover{
+  color:green;
+}
+
+.fa-retweet:hover{
+  color:blue;
+}
+
+.fa-heart:hover{
+  color:red;
+}
+
+.likes-button{
+  color:red;
+}
+
+.follow-search{
+  position: absolute;
+  top:5px;
+  right:0px;
+}
+
+:root{
+  --main-color: #1da1f2;
+  --dark-color:#14171a;
+  --footer-link-color: #aab8c2;
+  --footer-top-border-color:#e6ecf0;
+}
+
+

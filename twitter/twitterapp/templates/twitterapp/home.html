@@ -1,0 +1,125 @@
+{% extends "twitterapp/base.html" %}
+{% block javascript %}
+  <script>
+  var infinite = new Waypoint.Infinite({
+  element: $('.infinite-container')[0],
+  onBeforePageLoad: function () {
+  $('.loading').show();
+  },
+  onAfterPageLoad: function ($items) {
+  $('.loading').hide();
+  }
+  });
+  </script>
+{% endblock %}
+{% block content %}
+  {% load crispy_forms_tags %}
+  <article class="media content-section">
+    
+    <span  class="border-bottom"><h5 style="font-weight: bold;">Home</h5></span>
+    <div  class="tweet-form">
+      <form method="post" enctype="multipart/form-data">
+        <fieldset class=" field form-group">{% csrf_token %}
+          <img src="{{ user.profile.image.url }}" class="rounded-circle user-img">
+          {{form|crispy}}
+        </fieldset>
+        <div class="form-group tweet-button ">
+          <button class="btn btn-info btn-tweet " type="submit">Tweet</button>
+        </div>
+      </form>
+    </div>
+  </article>
+ 
+
+ 
+  
+  {%for post in  posts %}
+  {% if post.tweet %}
+   {% if post.tweet.user.profile in following.all or post.tweet.user ==  user %}
+  
+    <div class="infinite-container">
+      <div class="infinite-item">
+        <article class="media content-section ">
+          <!-- authorun profilindeki imagein urli-->
+          <img src="{{ post.tweet.user.profile.image.url }}" class="rounded-circle article-img">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-1" href="{% url 'user-detail' post.tweet.user %}">{{ post.tweet.user }}</a>
+              <small class="text-muted">@{{ post.tweet.user }}- {{ post.tweet.date_created }}</small>
+              <small  class="text-muted">{{ post.tweet.like_set.all.count }}</small>
+            </div>
+            <a class="tweet-link" href="{% url 'tweet-detail' post.tweet.pk %}"><p class="article-content">{{ post.tweet.content }}  </p></a>
+            {% if post.tweet.image %}
+              <img src="{{ post.tweet.image.url }}" class="rounded img-thumbnail tweet-img">
+            {% endif %}
+            <nav id="tweet-icons">
+              <a>
+                <form action="{% url 'retweet' %}" method="post"> {% csrf_token %}
+                  <button type="submit" name="tweet_id" value='{{ post.tweet.id }}' style="border: 0; background: none;">
+                  <i class="fa fa-retweet" aria-hidden="true">
+                    {{ post.tweet.retweets.all.count}}
+                  </i>
+                  </button>
+                </form>
+              </a>
+              <a>
+                <form action="{% url 'like_tweet' %}" method="post">{% csrf_token %}
+                  <button type="submit" name="tweet_id" value='{{ post.tweet.id }}' style="border: 0; background: none;">
+                  <i class="fas fa-heart {% if user in post.tweet.likes.all %} likes-button{% endif %}">
+                  {{ post.tweet.likes.all.count }}   </i>
+                  </button>
+                </form>
+              </a>
+              <a class="comment-icon" href="#"><i class="fas fa-comment" id="reply"></i></a>
+            </nav>
+          </div>
+        </article>
+      </div>
+    </div>
+    {% endif %}
+  
+ {% else %}
+  {% if post.retweetmodel.user.profile in following.all or post.retweetmodel.user == user %}
+    <div class="infinite-container">
+      <div class="infinite-item">
+        <article class="media content-section ">
+          <!-- authorun profilindeki imagein urli-->
+          <img src="{{ post.retweetmodel.user.profile.image.url }}" class="rounded-circle article-img">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a href="{% url 'user-detail' post.retweetmodel.user %}"><small class="text-muted"><i class="fas fa-retweet"></i> {{ post.retweetmodel.user }} Retweeted</small></a>
+              <br>
+              <a class="mr-1" href="{% url 'user-detail' post.retweetmodel.user %}">{{ post.retweetmodel.user }}</a>
+              <small class="text-muted">@{{ post.retweetmodel.user }}- {{ post.retweetmodel.date_created }}</small>
+              <small  class="text-muted">{{ post.retweetmodel.retweet.like_set.all.count }}</small>
+            </div>
+            <a class="tweet-link" href="{% url 'tweet-detail' post.retweetmodel.retweet.pk %}"><p class="article-content">{{ post.retweetmodel.retweet.content }}  </p></a>
+            {% if post.retweetmodel.retweet.image %}
+              <img src="{{ post.retweetmodel.retweet.image.url }}" class="rounded img-thumbnail tweet-img">
+            {% endif %}
+          </div>
+        </article>
+      </div>
+    </div>
+    {% endif %}
+  {% endif %}  
+  {% endfor %}
+
+  {% if posts.has_next %}
+    <a class="infinite-more-link" href="?page={{ posts.next_page_number }}">More</a>
+  {% endif %}
+  <div class="loading" style="display: none;">
+    Loading...
+  </div>
+  <script type="text/javascript">
+  document.getElementById('reply').addEventListener("click", function() {
+  document.querySelector('.bg-modal').style.display = "flex";
+  
+  });
+  document.querySelector('.close').addEventListener('click',function
+  (){
+  document.querySelector('.bg-modal').style.display = "none";
+  });
+  </script>
+  
+{% endblock content %}

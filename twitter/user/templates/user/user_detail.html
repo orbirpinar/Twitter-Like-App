@@ -1,0 +1,91 @@
+{% extends "twitterapp/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+  {% for profile in profiles %}
+    <div class="container">
+      <div class="profile clearfix">
+        <div class="image">
+          <img src="{{profile.cover_image.url }}" class="img-cover">
+        </div>
+        <div class="user clearfix">
+          <div class="avatar">
+            <img src="{{ profile.image.url}}" class="rounded-circle img-thumbnail img-profile">
+          </div>
+          <h2>{{ profile.user.username }}<span class="text-muted">@{{ view.kwargs.username }}</span></h2>
+          <div class="actions">
+            <div class="btn-group">
+              <a href="{% url 'user-likes' profile.user.username %}"  class=" edit-button btn btn-outline-info btn-sm tip btn-responsive" > Likes</a>
+              {% if not profile.user == user %}
+                <form action="{% url 'follow' %}" method="post">
+                  {% csrf_token %}
+                <button  type="submit" name="username" value="{{ profile.user.username}}" class="btn {%  if user in  profile.follow.all  %} btn-info {% else %}
+                  btn-outline-info
+                {% endif %}
+                btn-sm tip btn-responsive">
+                {%  if user in  profile.follow.all  %}
+                Unfollow
+              {% else %}
+                Follow
+              {% endif %}
+              </button>
+            </form>
+            <button  class="btn btn-outline-info btn-sm tip btn-responsive" title="" data-original-title="Send message"><span class="fas fa-envelope"></span> Message</button>
+          {% else %}
+            <a href="{% url 'edit-profile' %}"  class=" edit-button btn btn-outline-info btn-sm tip btn-responsive" > Edit Profile</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="info">
+      <p><b>{{ following.all.count }}</b> Following    <b>{{ profile.follow.all.count}}</b> Followers </p>
+      {% if profile.bio %}
+        <p><span class="title">{{ profile.bio }}</span>
+      {% endif %}
+      {% if profile.location %}
+        <p><span class="fas fa-globe"></span> <span class="title">Address:</span> {{ profile.location }}</p>
+      {% endif %}
+      {% if profile.birth_date %}
+        <p><span class="fas fa-gift"></span> <span class="title">Date of birth:</span> {{profile.birth_date|date:"d.m.Y"}}</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endfor %}
+<div class="infinite-container">
+{%  for tweet in user_tweets %}
+<div class="infinite-item">
+  <article class="media content-section">
+    <!-- authorun profilindeki imagein urli-->
+    <img src="{{ tweet.user.profile.image.url }}" class="rounded-circle article-img">
+    <div class="media-body">
+      <div class="article-metadata">
+        <a class="mr-1" href="{% url 'user-detail' tweet.user %}">{{ tweet.user }}</a>
+        <small class="text-muted">@{{ tweet.user }}- {{ tweet.date_crerated }}</small>
+      </div>
+      <a class="tweet-link" href="{% url 'tweet-detail' tweet.pk %}"><p class="article-content">{{ tweet.content}}</p></a>
+      {% if tweet.image %}
+        <img src="{{ tweet.image.url }}" class="rounded img-thumbnail tweet-img">
+      {% endif %}
+    </div>
+  </article>
+</div>
+{% endfor %}
+</div>
+<div class="loading" style="display: none;">
+Loading...
+</div>
+{% if page_obj.has_next %}
+<a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}">More</a>
+{% endif %}
+<script>
+var infinite = new Waypoint.Infinite({
+element: $('.infinite-container')[0],
+onBeforePageLoad: function () {
+$('.loading').show();
+},
+onAfterPageLoad: function ($items) {
+$('.loading').hide();
+}
+});
+</script>
+{% endblock content %}
