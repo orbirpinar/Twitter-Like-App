@@ -47,7 +47,7 @@ def home(request):
 
 
 def like_tweet(request):
-	tweet_id = request.GET.get('id')
+	tweet_id = request.GET.get('tweet_id')
 	action = request.GET.get('action')	
 	tweet = get_object_or_404(Tweet,id=tweet_id)
 	is_liked= False
