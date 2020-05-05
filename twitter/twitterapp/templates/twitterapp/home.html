@@ -43,15 +43,16 @@
               <img src="{{ post.tweet.image.url }}" class="rounded img-thumbnail tweet-img">
             {% endif %}
             <nav id="tweet-icons">
-              <a>
-                <form data-url = "{% url 'retweet' %}" id="retweetForm" method="post"> {% csrf_token %}
-                  <button id="retweetButton"  name="tweet_id" value='{{ post.tweet.id }}' style="border: 0; background: none;">
+        
+
+               <form data-url = "{% url 'retweet' %}" id="retweetForm" method="post"> {% csrf_token %}
+                  <button id="retweetButton-{{ post.tweet.id }}"   onClick='event.preventDefault(); retweet({{ post.tweet.id }})' data-id='{{ post.tweet.id }}' style="border: 0; background: none;">
                   <i class="fa fa-retweet" aria-hidden="true">
                     {{ post.tweet.retweets.all.count}}
                   </i>
                   </button>
                 </form>
-              </a>
+
               <a>
              
                   <button id=button-{{post.tweet.id}} name="tweet_id" onClick='likeTweet({{ post.tweet.id }})' style="border: 0; background: none;" class="{% if request.user in post.tweet.likes.all %} likes-button {% endif %}">
@@ -128,21 +129,46 @@
       })
     }
 
-    $(document).ready(function(){
-      $('#retweetButton').click(function(event){
-        event.preventDefault()
-        const serializeData = $('#retweetForm').serialize();
-        $.ajax({
+
+
+    function retweet (id) {
+       $.ajax({
           url : $("#retweetForm").data('url'),
-          data: serializeData,
+          data: {
+            "id":id,
+          },
+          dataType:'json',
+          headers :{'X-CSRFToken': csrftoken},
           type:"post",
           success:function(response){
-            console.log(response)
+            username = response.tweet['username']
+            content = response.tweet['content']
+            userImageUrl = response.tweet['user_image']
+            date_created = response.new_retweet.date_created
+            $('#retweetList').append(` <div class="infinite-container">
+      <div class="infinite-item">
+        <article class="media content-section ">
+          <!-- authorun profilindeki imagein urli-->
+          <img src="${userImageUrl}" class="rounded-circle article-img">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a href=""><small class="text-muted"><i class="fas fa-retweet"></i> ${response.retweet_username} Retweeted</small></a>
+              <br>
+              <a class="mr-1" href=""></a>
+              <small class="text-muted">@-${username}-${date_created}</small>
+              <small  class="text-muted"></small>
+            </div>
+            <a class="tweet-link" href=""><p class="article-content">${content} </p></a>
+          </div>
+        </article>
+      </div>`)
+        }
+    });
 
-          }
-        })
-      })
-    })
+}
+    
+
+
 
 
   </script>

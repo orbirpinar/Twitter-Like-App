@@ -12,6 +12,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.views import View
 from django.forms.models import model_to_dict
+from django.core import serializers
 
 def landing(request):
 	if request.user.is_authenticated:
@@ -64,8 +65,10 @@ def like_tweet(request):
 	return JsonResponse({'is_liked':is_liked})
 
 def retweet(request):
-	tweet = get_object_or_404(Tweet,id=request.POST.get('tweet_id'))
+	tweet = get_object_or_404(Tweet,id=request.POST.get('id'))
 	#if user already retweet the tweet, this will remove the Retweet from 
+	
+
 	is_retweet = False
 	if RetweetModel.objects.filter(user=request.user,retweet=tweet).exists():
 		RetweetModel.objects.filter(user=request.user,retweet=tweet).delete()
@@ -78,19 +81,36 @@ def retweet(request):
 			is_retweet = True
 			return JsonResponse({
 		"is_retweet":is_retweet,
-		"new_retweet":model_to_dict(new_retweet)
+		"new_retweet":model_to_dict(new_retweet),
+		"retweet_username":new_retweet.user.username,
+		"tweet":{
+		"content":tweet.content,
+		"username":tweet.user.username,
+		"user":tweet.user.id,
+		"date_created":tweet.date_created,
+		"user_image":tweet.user.profile.image.url,
+		},
+
+
 	})
 	
 
 
 	
 def follow_user(request):
-	user = get_object_or_404(User,username=request.POST.get('username'))
+	user = get_object_or_404(User,id=request.GET.get('id'))
+	followCount = Profile.objects.filter(follow=user).all().count()
+	followersCount = user.profile.follow.all().count()
+	is_follow = False
 	if request.user in user.profile.follow.all():
 		user.profile.follow.remove(request.user)
+		is_follow = False
 	else:
 		user.profile.follow.add(request.user)
-	return HttpResponseRedirect(request.META['HTTP_REFERER'])
+		is_follow = True
+	return JsonResponse({'is_follow':is_follow,
+						'followCount':followCount,
+						'followersCount':followersCount})
 
 
 

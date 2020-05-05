@@ -59,7 +59,7 @@ class Post(models.Model):
 
 class Tweet(Post):
 	content = models.CharField(verbose_name='Tweet',max_length=200)
-	image = models.ImageField( verbose_name = "",upload_to="tweet_pics",null=True,blank=True)
+	image = models.FileField( verbose_name = "",upload_to="tweet_pics",null=True,blank=True)
 	likes = models.ManyToManyField(User,related_name='likes',blank=True)
 
 	objects = TweetManager()
@@ -67,6 +67,9 @@ class Tweet(Post):
 		return reverse('tweet-detail',args=[str(self.pk)])
 	def __str__(self):
 		return self.content
+
+	def natural_key(self):
+		return(self.content,self.likes.all(),self.user.username,self.date_created)
 
 class RetweetModel(Post):
 	retweet = models.ForeignKey(Tweet,on_delete=models.CASCADE,related_name="retweets")

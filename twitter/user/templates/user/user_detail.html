@@ -16,9 +16,8 @@
             <div class="btn-group">
               <a href="{% url 'user-likes' profile.user.username %}"  class=" edit-button btn btn-outline-info btn-sm tip btn-responsive" > Likes</a>
               {% if not profile.user == user %}
-                <form action="{% url 'follow' %}" method="post">
-                  {% csrf_token %}
-                <button  type="submit" name="username" value="{{ profile.user.username}}" class="btn {%  if user in  profile.follow.all  %} btn-info {% else %}
+                
+                <button  id = "followButton" onClick="follow({{profile.user.id}})" value="{{ profile.user.username}}" class="btn {%  if user in  profile.follow.all  %} btn-info {% else %}
                   btn-outline-info
                 {% endif %}
                 btn-sm tip btn-responsive">
@@ -28,7 +27,6 @@
                 Follow
               {% endif %}
               </button>
-            </form>
             <button  class="btn btn-outline-info btn-sm tip btn-responsive" title="" data-original-title="Send message"><span class="fas fa-envelope"></span> Message</button>
           {% else %}
             <a href="{% url 'edit-profile' %}"  class=" edit-button btn btn-outline-info btn-sm tip btn-responsive" > Edit Profile</a>
@@ -37,7 +35,9 @@
       </div>
     </div>
     <div class="info">
-      <p><b>{{ following.all.count }}</b> Following    <b>{{ profile.follow.all.count}}</b> Followers </p>
+      <div class="followCount">
+      <p><b id ="followingCount">{{ following.all.count }}</b> Following    <b id="followersCount">{{ profile.follow.all.count}}</b> Followers </p>
+      </div>
       {% if profile.bio %}
         <p><span class="title">{{ profile.bio }}</span>
       {% endif %}
@@ -71,6 +71,52 @@
 </div>
 {% endfor %}
 </div>
+
+<script type="text/javascript">
+  
+
+  function follow(id){
+
+   $.ajax({
+        url : '{% url "follow" %}',
+        data : {
+          'id':id,
+        },
+        dataType:'json',
+        success:function(data){
+          console.log(data)
+          let followButton  = $(`#followButton`)
+          let followersCount = $('#followersCount');
+          let newFollowers = data.followersCount;
+          console.log(newFollowers)
+          if(data.is_follow){
+            newFollowers += 1
+            followButton.text('Unfollow')
+            followButton.removeClass().addClass("btn btn-info btn-sm tip btn-responsive")
+            followersCount.text(newFollowers)
+
+
+          }else{
+
+            newFollowers -= 1
+            followButton.text('Follow')
+            followButton.removeClass().addClass("btn btn-outline-info btn-sm tip btn-responsive")
+            followersCount.text(newFollowers)
+
+            
+
+
+          }
+        }
+
+      })
+    }
+
+
+
+</script>
+
+
 
 
 {% endblock content %}
