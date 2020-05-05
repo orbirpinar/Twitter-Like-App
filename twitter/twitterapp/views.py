@@ -4,7 +4,7 @@ from .models import Tweet,Reply,Profile,RetweetModel,Post
 from .forms import TweetForm,ReplyForm
 from django.contrib.auth.decorators import login_required
 from django.views import generic
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,JsonResponse
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.views.generic.edit import FormMixin
@@ -47,13 +47,20 @@ def home(request):
 
 
 def like_tweet(request):
-	tweet = get_object_or_404(Tweet,id=request.POST.get('tweet_id'))
+	tweet_id = request.GET.get('id')
+	action = request.GET.get('action')	
+	tweet = get_object_or_404(Tweet,id=tweet_id)
+	is_liked= False
 	if request.user in tweet.likes.all():
+		
 		tweet.likes.remove(request.user)
+		is_liked = False
 	else:
 		tweet.likes.add(request.user)
+		is_liked=True
+
 	#send to previous page
-	return redirect(request.META['HTTP_REFERER'])
+	return JsonResponse({'is_liked':is_liked})
 
 def retweet(request):
 	tweet = get_object_or_404(Tweet,id=request.POST.get('tweet_id'))

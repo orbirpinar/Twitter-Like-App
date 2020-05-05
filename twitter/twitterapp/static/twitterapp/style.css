@@ -555,6 +555,9 @@ float: left;
   background-size:2900%;
   
 }
+.fa-heart{
+  pointer-events:none;
+}
 
 .heart:hover {
   background-position:right;

@@ -1,16 +1,6 @@
 {% extends "twitterapp/base.html" %}
 {% block javascript %}
-  <script>
-  var infinite = new Waypoint.Infinite({
-  element: $('.infinite-container')[0],
-  onBeforePageLoad: function () {
-  $('.loading').show();
-  },
-  onAfterPageLoad: function ($items) {
-  $('.loading').hide();
-  }
-  });
-  </script>
+
 {% endblock %}
 {% block content %}
   {% load crispy_forms_tags %}
@@ -63,12 +53,11 @@
                 </form>
               </a>
               <a>
-                <form action="{% url 'like_tweet' %}" method="post">{% csrf_token %}
-                  <button type="submit" name="tweet_id" value='{{ post.tweet.id }}' style="border: 0; background: none;">
-                  <i class="fas fa-heart {% if user in post.tweet.likes.all %} likes-button{% endif %}">
-                  {{ post.tweet.likes.all.count }}   </i>
+             
+                  <button id=button-{{post.tweet.id}} name="tweet_id" onClick='likeTweet({{ post.tweet.id }})' style="border: 0; background: none;" class="{% if request.user in post.tweet.likes.all %} likes-button {% endif %}">
+                  <i class="fas fa-heart">
+                   {{ post.tweet.likes.all.count }}   </i>
                   </button>
-                </form>
               </a>
               <a class="comment-icon" href="#"><i class="fas fa-comment" id="reply"></i></a>
             </nav>
@@ -105,21 +94,43 @@
   {% endif %}  
   {% endfor %}
 
-  {% if posts.has_next %}
-    <a class="infinite-more-link" href="?page={{ posts.next_page_number }}">More</a>
-  {% endif %}
-  <div class="loading" style="display: none;">
-    Loading...
+.
   </div>
-  <script type="text/javascript">
-  document.getElementById('reply').addEventListener("click", function() {
-  document.querySelector('.bg-modal').style.display = "flex";
-  
-  });
-  document.querySelector('.close').addEventListener('click',function
-  (){
-  document.querySelector('.bg-modal').style.display = "none";
-  });
+
+
+  <script>
+    function likeTweet(id){
+      $.ajax({
+        url : '{% url "like_tweet" %}',
+        data : {
+          'id':id,
+        },
+        dataType:'json',
+        success:function(data){
+          console.log(data)
+          let likeButton  = $(`#button-${id}`)
+          console.log()
+          let likeCount = parseInt(likeButton.text());
+          if(data.is_liked){
+            likeButton.css('color','red');
+            likeCount += 1;
+            likeButton.children().text("  " + likeCount)
+
+
+          }else{
+            likeButton.css('color','#000')
+            likeCount-=1;
+            likeButton.children().text( "  " + likeCount)
+          }
+        }
+
+      })
+    }
+
+
+
+
   </script>
+  
   
 {% endblock content %}
