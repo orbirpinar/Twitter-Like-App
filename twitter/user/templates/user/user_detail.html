@@ -71,21 +71,6 @@
 </div>
 {% endfor %}
 </div>
-<div class="loading" style="display: none;">
-Loading...
-</div>
-{% if page_obj.has_next %}
-<a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}">More</a>
-{% endif %}
-<script>
-var infinite = new Waypoint.Infinite({
-element: $('.infinite-container')[0],
-onBeforePageLoad: function () {
-$('.loading').show();
-},
-onAfterPageLoad: function ($items) {
-$('.loading').hide();
-}
-});
-</script>
+
+
 {% endblock content %}

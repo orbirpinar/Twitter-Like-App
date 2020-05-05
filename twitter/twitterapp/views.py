@@ -11,6 +11,7 @@ from django.views.generic.edit import FormMixin
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.views import View
+from django.forms.models import model_to_dict
 
 def landing(request):
 	if request.user.is_authenticated:
@@ -47,7 +48,7 @@ def home(request):
 
 
 def like_tweet(request):
-	tweet_id = request.GET.get('tweet_id')
+	tweet_id = request.GET.get('id')
 	action = request.GET.get('action')	
 	tweet = get_object_or_404(Tweet,id=tweet_id)
 	is_liked= False
@@ -65,13 +66,21 @@ def like_tweet(request):
 def retweet(request):
 	tweet = get_object_or_404(Tweet,id=request.POST.get('tweet_id'))
 	#if user already retweet the tweet, this will remove the Retweet from 
+	is_retweet = False
 	if RetweetModel.objects.filter(user=request.user,retweet=tweet).exists():
 		RetweetModel.objects.filter(user=request.user,retweet=tweet).delete()
+		is_retweet = False
+		return JsonResponse({"is_retweet":is_retweet})
 	else:
 		if request.method=="POST":
 			new_retweet = RetweetModel(user=request.user,retweet=tweet)
 			new_retweet.save()
-	return redirect(request.META['HTTP_REFERER'])
+			is_retweet = True
+			return JsonResponse({
+		"is_retweet":is_retweet,
+		"new_retweet":model_to_dict(new_retweet)
+	})
+	
 
 
 	

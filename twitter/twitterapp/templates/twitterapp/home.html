@@ -44,8 +44,8 @@
             {% endif %}
             <nav id="tweet-icons">
               <a>
-                <form action="{% url 'retweet' %}" method="post"> {% csrf_token %}
-                  <button type="submit" name="tweet_id" value='{{ post.tweet.id }}' style="border: 0; background: none;">
+                <form data-url = "{% url 'retweet' %}" id="retweetForm" method="post"> {% csrf_token %}
+                  <button id="retweetButton"  name="tweet_id" value='{{ post.tweet.id }}' style="border: 0; background: none;">
                   <i class="fa fa-retweet" aria-hidden="true">
                     {{ post.tweet.retweets.all.count}}
                   </i>
@@ -68,6 +68,7 @@
     {% endif %}
   
  {% else %}
+ <div id="retweetList">
   {% if post.retweetmodel.user.profile in following.all or post.retweetmodel.user == user %}
     <div class="infinite-container">
       <div class="infinite-item">
@@ -93,7 +94,7 @@
     {% endif %}
   {% endif %}  
   {% endfor %}
-
+</div>
 .
   </div>
 
@@ -127,7 +128,21 @@
       })
     }
 
+    $(document).ready(function(){
+      $('#retweetButton').click(function(event){
+        event.preventDefault()
+        const serializeData = $('#retweetForm').serialize();
+        $.ajax({
+          url : $("#retweetForm").data('url'),
+          data: serializeData,
+          type:"post",
+          success:function(response){
+            console.log(response)
 
+          }
+        })
+      })
+    })
 
 
   </script>
